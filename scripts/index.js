@@ -3,6 +3,9 @@ var listpromo = [];
 //declaration des variable pour la creation de promo
 var newPromo = document.querySelector('#newPromo');
 var createPromo = document.querySelector('#createPromo');
+var modifyPromo = document.querySelector('#modifyPromo');
+var deletePromo = document.querySelector('#deletePromo');
+var mySelect = document.querySelector('#list');
 function getPromotion (){
 // Récupérez la liste des promotions via un fetch et affichez la via un console.log
 
@@ -16,7 +19,11 @@ function getPromotion (){
             listpromo  = promo['hydra:member'];
             listpromo.forEach(promotion => {
                 var myDiv = document.querySelector("#myDiv");
-                myDiv.innerHTML += promotion.name + "<br>";
+                myDiv.innerHTML +=   promotion.id + ". " + promotion.name + "<br>";
+// ici je veux rajouter la liste dans le menu deroulant         
+                var myOption = document.createElement('option');
+                myOption.innerHTML = promotion.name;
+                mySelect.appendChild(myOption);
             })
      })
 
@@ -26,7 +33,7 @@ getPromotion();
 // creation d'un event listener pour le bouton
 createPromo.addEventListener('click', createPromotion);
 
-// fonction qui permettra de creer la fonction
+// fonction qui permettra de creer la fonction, la methode POST permettra de rajouter la nouvelle promotion a la liste deja pré-existante.
 function createPromotion () {
     fetch("http://api-students.popschool-lens.fr/api/promotions", {
         headers: {
@@ -34,6 +41,7 @@ function createPromotion () {
             'Content-Type': 'application/json'
           },
         method: "POST",
+// on transforme la valeur du champs input newPromo en chaine Json via stringify
         body: JSON.stringify({
             name: newPromo.value
         })
@@ -41,7 +49,5 @@ function createPromotion () {
        .then(response => response.json())
        .then(promo => {
            console.log(promo.name + " créé")
-       })
-       
-        
-}
+       })    
+ }
