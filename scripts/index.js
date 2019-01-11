@@ -14,7 +14,8 @@ function getPromotion (){
         .then(response => response.json())
 // le json devient promo est renvoyé par la console via console log
         .then(promo => {
-// la notation entre crochets m'a permi de selectionner uniquement la partie qui m'interesse         
+// la notation entre crochets m'a permi de selectionner uniquement la partie qui m'interesse
+            console.log(promo);
             console.log(promo['hydra:member']);
             listpromo  = promo['hydra:member'];
             listpromo.forEach(promotion => {
@@ -51,3 +52,24 @@ function createPromotion () {
            console.log(promo.name + " créé")
        })    
  }
+
+ deletePromo.addEventListener ('click', function (){
+    
+    // Je demande confirmation à l'utilisateur avant suppression 
+    if (confirm("Supprimer la promo : " + mySelect.value + " ?")) {
+        // Utilsatar confirme la suppression
+        deletePromotion(mySelect.value);
+    }
+})
+
+
+ // C'est la fonction qui est déclarée pour s'occuper de la suppression
+function deletePromotion(idPromo) 
+{
+        fetch("http://api-students.popschool-lens.fr/api/promotions/" + idPromo, {
+            method: "DELETE"
+        })
+            .then(function (response) {
+                // Du coup il faudra faire ctrl R pour réactualiser la page et constater la suppression
+            });
+}
