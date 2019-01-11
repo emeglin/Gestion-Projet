@@ -22,8 +22,9 @@ function getPromotion (){
                 var myDiv = document.querySelector("#myDiv");
                 myDiv.innerHTML +=   promotion.id + ". " + promotion.name + "<br>";
 // ici je veux rajouter la liste dans le menu deroulant         
-                var myOption = document.createElement('option');
+                var myOption = document.createElement('option');             
                 myOption.innerHTML = promotion.name;
+                myOption.value = promotion.id
                 mySelect.appendChild(myOption);
             })
      })
@@ -57,8 +58,9 @@ function createPromotion () {
     
     // Je demande confirmation à l'utilisateur avant suppression 
     if (confirm("Supprimer la promo : " + mySelect.value + " ?")) {
-        // Utilsatar confirme la suppression
+        // confirme la suppression
         deletePromotion(mySelect.value);
+    // ici le value correspond a celui que j'ai monté dans le DOM en l'allouant a l'option
     }
 })
 
