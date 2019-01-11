@@ -6,6 +6,7 @@ var createPromo = document.querySelector('#createPromo');
 var modifyPromo = document.querySelector('#modifyPromo');
 var deletePromo = document.querySelector('#deletePromo');
 var mySelect = document.querySelector('#list');
+var myDiv = document.querySelector("#myDiv");
 function getPromotion (){
 // Récupérez la liste des promotions via un fetch et affichez la via un console.log
 
@@ -18,9 +19,9 @@ function getPromotion (){
             console.log(promo);
             console.log(promo['hydra:member']);
             listpromo  = promo['hydra:member'];
+            myDiv.innerHTML = '';
             listpromo.forEach(promotion => {
-                var myDiv = document.querySelector("#myDiv");
-                myDiv.innerHTML +=   promotion.id + ". " + promotion.name + "<br>";
+                 myDiv.innerHTML +=   promotion.id + ". " + promotion.name + "<br>";
 // ici je veux rajouter la liste dans le menu deroulant         
                 var myOption = document.createElement('option');             
                 myOption.innerHTML = promotion.name;
@@ -49,8 +50,9 @@ function createPromotion () {
         })
        })
        .then(response => response.json())
-       .then(promo => {
-           console.log(promo.name + " créé")
+       .then(promo => {            
+            getPromotion();
+            console.log(promo.name + " créé")
        })    
  }
 
@@ -71,7 +73,8 @@ function deletePromotion(idPromo)
         fetch("http://api-students.popschool-lens.fr/api/promotions/" + idPromo, {
             method: "DELETE"
         })
-            .then(function (response) {
-                // Du coup il faudra faire ctrl R pour réactualiser la page et constater la suppression
+            .then(function (response) {                
+                getPromotion();
+                console.log ("supprimé")
             });
 }
