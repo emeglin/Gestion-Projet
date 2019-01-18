@@ -7,7 +7,7 @@
     
 ## modification prévues : 
 
-* lier les promotions aux étudiant ainsi permettre leur affichage
-* modifier la liste des étudiants contenus dans les promotions
-* ajouter des étudiants
-* supprimer des étudiants
+* *lier les promotions aux étudiant ainsi permettre leur affichage*
+* *modifier la liste des étudiants contenus dans les promotions*
+* *ajouter des étudiants*
+* *supprimer des étudiants*
