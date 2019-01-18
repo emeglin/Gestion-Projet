@@ -15,7 +15,7 @@
 
 ---
 
-# student Application
+# Student Application
 
 **That Application has for purpose:**  
 * *Get a student promotion list*
