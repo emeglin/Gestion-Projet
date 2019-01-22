@@ -9,6 +9,19 @@ var modifyPromo = document.querySelector('#modifyPromo');
 var deletePromo = document.querySelector('#deletePromo');
 var mySelect = document.querySelector('#list');
 var myDiv = document.querySelector("#myDiv");
+// declaration des variables concernant les etudiants
+// declaration of students variables
+var showPromo = document.querySelector('#showPromo');
+var promoTitle = document.querySelector('#promoTitle');
+var studentDisplay = document.querySelector('#studentDisplay');
+var url = "/api/promotions/";
+var myUl = document.querySelector('ul');
+
+var name = "";
+
+
+//     -----Partie Promotions-----
+//     -----Promotions part-----
 
 function getPromotion() {
     // Récupérez la liste des promotions via un fetch et affichez la via un console.log
@@ -25,7 +38,7 @@ function getPromotion() {
         .then(promo => {
             // la notation entre crochets m'a permi de selectionner uniquement la partie qui m'interesse
 
-        
+
             console.log(promo);
             console.log(promo['hydra:member']);
             listpromo = promo['hydra:member'];
@@ -36,9 +49,11 @@ function getPromotion() {
                 // ici je veux rajouter la liste dans le menu deroulant 
                 // here i add the list in my select menu        
                 var myOption = document.createElement('option');
-                myOption.innerHTML = promotion.name;
-                myOption.value = promotion.id
+                myOption.innerHTML = `${promotion.id}  ${promotion.name}`;
+                myOption.value = promotion.id;
+
                 mySelect.appendChild(myOption);
+
             })
         })
 
@@ -100,8 +115,8 @@ modifyPromo.addEventListener('click', function () {
 
     // Je demande confirmation à l'utilisateur avant modification
     // Asking to the user for change confirming
-    if (confirm("Modifier la promo : " + mySelect.value + " ?")) {        
-        modifyPromotion(mySelect.value);        
+    if (confirm("Modifier la promo : " + mySelect.value + " ?")) {
+        modifyPromotion(mySelect.value);
     }
 })
 
@@ -110,8 +125,8 @@ function modifyPromotion(idPromo) {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
-            },            
-            method: "PUT",            
+            },
+            method: "PUT",
             body: JSON.stringify({
                 name: newPromo.value
             })
@@ -121,7 +136,35 @@ function modifyPromotion(idPromo) {
             console.log(promo.name + "modifié")
             getPromotion();
         })
-        .catch(error =>{
+        .catch(error => {
             console.log("ERROR");
         })
 }
+//         -----Partie etudiants-----
+//         -----Students part-----
+
+showPromo.addEventListener('click', getStudent);
+
+function getStudent() {
+    fetch("http://api-students.popschool-lens.fr/api/promotions/" + mySelect.value)
+        .then(response => response.json())
+        .then(
+            promo => {
+                myUl.innerHTML = '';                
+                promo.students.forEach(
+                    studentURL => {
+                        fetch("http://api-students.popschool-lens.fr" + studentURL)
+                            .then(response => response.json())
+                            .then(
+                                student => {
+                                    var myLi = document.createElement('li');                                    
+                                    myUl.appendChild(myLi);
+                                    myLi.innerHTML = student.firstname + student.lastname;
+                                }
+                            )
+                    }
+                );
+            }
+        );
+}
+   
