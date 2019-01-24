@@ -14,11 +14,11 @@ var myDiv = document.querySelector("#myDiv");
 var showPromo = document.querySelector('#showPromo');
 var promoTitle = document.querySelector('#promoTitle');
 var studentDisplay = document.querySelector('#studentDisplay');
-var url = "/api/promotions/";
 var myUl = document.querySelector('ul');
-
 var name = "";
-
+var studentCreate = document.querySelector('#btnCreateStudent');
+var newFirstName = document.querySelector('#newFirstName');
+var newLastName = document.querySelector('#newLastName');
 
 //     -----Partie Promotions-----
 //     -----Promotions part-----
@@ -45,7 +45,7 @@ function getPromotion() {
             myDiv.innerHTML = '';
             mySelect.innerHTML = '';
             listpromo.forEach(promotion => {
-                myDiv.innerHTML += promotion.id + ". " + promotion.name + "<br>";
+                // myDiv.innerHTML += promotion.id + ". " + promotion.name + "<br>";
                 // ici je veux rajouter la liste dans le menu deroulant 
                 // here i add the list in my select menu        
                 var myOption = document.createElement('option');
@@ -150,16 +150,28 @@ function getStudent() {
         .then(response => response.json())
         .then(
             promo => {
-                myUl.innerHTML = '';                
+                promoTitle.innerHTML = promo.name;
+                myUl.innerHTML = '';
                 promo.students.forEach(
                     studentURL => {
                         fetch("http://api-students.popschool-lens.fr" + studentURL)
                             .then(response => response.json())
                             .then(
                                 student => {
-                                    var myLi = document.createElement('li');                                    
+                                    var myLi = document.createElement('li');
                                     myUl.appendChild(myLi);
-                                    myLi.innerHTML = student.firstname + student.lastname;
+                                    myLi.id = "student" + student.id;
+                                    myLi.innerHTML = student.firstname +" "+ student.lastname+ " ";
+                                    var btnDeleteStudent = document.createElement('button');
+                                    btnDeleteStudent.innerHTML = 'effacer';
+                                    btnDeleteStudent.value = student.id;
+                                    // dataset permet de stocker les infos
+                                    // can store data to use it later
+                                    btnDeleteStudent.dataset.firstname = student.firstname;
+                                    btnDeleteStudent.dataset.lastname = student.lastname;
+                                    btnDeleteStudent.dataset.path = student['@id'];
+                                    btnDeleteStudent.addEventListener('click', deleteStudent);
+                                    myLi.appendChild(btnDeleteStudent);
                                 }
                             )
                     }
@@ -167,4 +179,42 @@ function getStudent() {
             }
         );
 }
-   
+
+
+function deleteStudent(event) {
+    var dataTarget = event.target.dataset
+    if (confirm("Êtes-vous certain de vouloir supprimer l'étudiant " + dataTarget.firstname + " " + event.target.dataset.lastname + " ?")) {
+        console.log("ok bro " + dataTarget.firstname);
+        fetch("http://api-students.popschool-lens.fr" + dataTarget.path, {
+                method: 'DELETE'
+            })
+            .then(function (response) {
+                console.log("supprimé")
+                // permet de supprimer sur la page html a la volée
+                var liStudent = document.querySelector("#student" + event.target.value);
+                liStudent.remove();
+            })
+    }
+}
+
+studentCreate.addEventListener('click', addStudent); 
+
+function addStudent() {
+    
+    fetch("http://api-students.popschool-lens.fr/api/students", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",            
+            body: JSON.stringify({
+                firstname: newFirstName.value,
+                lastname: newLastName.value
+            })
+        })
+        .then(response => response.json())
+        .then(promo => {
+           
+            console.log(promo.name + " créé")
+        })
+}
