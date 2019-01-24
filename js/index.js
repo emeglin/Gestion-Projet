@@ -161,7 +161,7 @@ function getStudent() {
                                     var myLi = document.createElement('li');
                                     myUl.appendChild(myLi);
                                     myLi.id = "student" + student.id;
-                                    myLi.innerHTML = student.firstname +" "+ student.lastname+ " ";
+                                    myLi.innerHTML = student.firstname + " " + student.lastname + " ";
                                     var btnDeleteStudent = document.createElement('button');
                                     btnDeleteStudent.innerHTML = 'effacer';
                                     btnDeleteStudent.value = student.id;
@@ -172,6 +172,16 @@ function getStudent() {
                                     btnDeleteStudent.dataset.path = student['@id'];
                                     btnDeleteStudent.addEventListener('click', deleteStudent);
                                     myLi.appendChild(btnDeleteStudent);
+
+                                    var btnModifyStudent = document.createElement('button');
+                                    btnModifyStudent.innerHTML = 'modifier';
+                                    btnModifyStudent.value = student.id;
+                                    btnModifyStudent.dataset.firstname = student.firstname;
+                                    btnModifyStudent.dataset.lastname = student.lastname;
+                                    btnModifyStudent.dataset.path = student['@id'];
+                                    btnModifyStudent.addEventListener('click', ModifyStudent);
+                                    myLi.appendChild(btnModifyStudent);
+
                                 }
                             )
                     }
@@ -197,24 +207,49 @@ function deleteStudent(event) {
     }
 }
 
-studentCreate.addEventListener('click', addStudent); 
+studentCreate.addEventListener('click', addStudent);
 
 function addStudent() {
-    
     fetch("http://api-students.popschool-lens.fr/api/students", {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            method: "POST",            
+            method: "POST",
             body: JSON.stringify({
                 firstname: newFirstName.value,
-                lastname: newLastName.value
-            })
+                lastname: newLastName.value,
+                birthdate: "2019-01-13T13:30:49.788Z",
+                promotion: 'api/promotions/' + mySelect.value
+            }),
         })
         .then(response => response.json())
-        .then(promo => {
-           
-            console.log(promo.name + " créé")
+        .then(student => {
+            var liStudent = document.querySelector("#student" + student.id);
+            console.log(student.lastname + " créé")
+            console.log(student.firstname + " créé")
         })
+}
+
+function ModifyStudent(event) {
+    var dataTarget = event.target.dataset
+    if (confirm("Êtes-vous certain de vouloir modifier l'étudiant " + dataTarget.firstname + " " + event.target.dataset.lastname + " ?")) {
+
+        console.log("ok" + dataTarget.firstname);
+        fetch("http://api-students.popschool-lens.fr" + dataTarget.path, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                method: 'PUT',
+                body: JSON.stringify({
+                    firstname: newFirstName.value,
+                    lastname: newLastName.value,
+                    })
+                })
+                .then(response => response.json())
+                .then(function (response) {
+                    console.log("modifié")
+            })
+        }
 }

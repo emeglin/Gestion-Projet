@@ -1,37 +1,43 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="scripts/index.js" defer></script>
+    <script src="js/index.js" defer></script>
+    <link href="css/bootstrap.css" rel="stylesheet">
     <title>Document</title>
 </head>
+
 <body>
-   <div id="myDiv"> 
-       chargement...      
-   </div>
-  <input id="newPromo" type="text">
-  <button id="createPromo">creer</button>
-  <button id="modifyPromo">modifier</button>
+    <div class="container">
+        <div class="card w-25 text-center row ">
+            <div id="myDiv" class="card-header">
+                chargement...
+            </div>
+            <input id="newPromo" type="text">
+            <button id="createPromo" class="btn btn-primary text-white bg-dark ">creer</button>
+            <button id="modifyPromo" class="btn btn-primary text-white bg-dark ">modifier</button>
 
-<select name="listPromo" id="list">
-    <option selected>Choisissez une promotion</option>
-</select>
-<button id="deletePromo">effacer</button>
-<button id="showPromo">afficher</button>
-<div>
-    <input id="newFirstName" type="text">
-    <input id="newLastName" type="text">
-    <button id="btnCreateStudent">Ajouter un étudiant</button>
-</div>
-<div>
-    <h1 id="promoTitle"></h1>
-</div>
-
-<div id="studentDisplay">
-    <ul></ul>
-</div>
-
+            <select name="listPromo" id="list">
+                <option selected>Choisissez une promotion</option>
+            </select>
+            <button id="deletePromo" class="btn btn-primary text-white bg-dark ">effacer</button>
+            <button id="showPromo" class="btn btn-primary text-white bg-dark ">afficher</button>
+            <div class="card-body">
+                <input id="newFirstName" type="text">
+                <input id="newLastName" type="text">
+                <button id="btnCreateStudent" class="btn btn-primary">Ajouter un étudiant</button>
+            </div>
+            <div>
+                <h1 id="promoTitle"></h1>
+            </div>
+            <div id="studentDisplay">
+                <ul></ul>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>

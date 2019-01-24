@@ -27,3 +27,9 @@
 * *modify student list inside a promotion*
 * *add new student*
 * *delete a student*
+
+
+
+## Mode emploi
+
+![ModeEmploiApplication](img/mode-emploi-api-student.png)
